@@ -22,6 +22,12 @@ namespace PC_Demo
     {
         private JQPrinter printer = null;
         private SerialPort port = new SerialPort();
+        double[] data = { 0, 0, 0, 0, 0, 0 };
+        string testloc;
+        string testOperator;
+        DateTime starttime;
+        DateTime stoptime;
+        TimeSpan testperoid;
         public Form1()
         {
             InitializeComponent();
@@ -285,10 +291,10 @@ namespace PC_Demo
             esc_Enforcement_test();
             this.buttonEnforcement.Enabled = true;
         }
-        private void printtablecontent()
+        private void readFile()
         {
-            FileStream fs=null;
-            StreamReader sr=null;
+            FileStream fs = null;
+            StreamReader sr = null;
             try
             {
                 fs = new FileStream("printf.txt", FileMode.Open);
@@ -301,35 +307,33 @@ namespace PC_Demo
                 return;
             }
             string temp;
-            temp=sr.ReadLine();
+            temp = sr.ReadLine();
             sr.Close();
             fs.Close();
             var parts = temp.Split(',');
-            string testloc = parts[0];
-            string testOperator = parts[1];
-            DateTime starttime;
-            DateTime stoptime;
-            TimeSpan testperoid;
-            
+            testloc = parts[0];
+            testOperator = parts[1];
             string pattern = "yyyy/MM/dd  HH:mm:ss";
             DateTime.TryParseExact((string)parts[2], pattern, null, DateTimeStyles.None, out starttime);
             DateTime.TryParseExact((string)parts[3], pattern, null, DateTimeStyles.None, out stoptime);
             testperoid = stoptime - starttime;
-            double []data={0,0,0,0,0,0};
             data[0] = double.Parse(parts[4]);//pAMax
             data[1] = double.Parse(parts[5]);//pAMin
             data[2] = double.Parse(parts[6]);//pAAvg
             data[3] = double.Parse(parts[7]);//mAMax
             data[4] = double.Parse(parts[8]);//mAMin
             data[5] = double.Parse(parts[9]);//mAAvg
-            //yield return new KeyValuePair<
-            DateTime date = DateTime.Now;
-            
+        }
+        private void printtablecontent()
+        {
+            btn_preview_Click(null, null);
+           
+            DateTime Printdate = DateTime.Now;
             printer.wakeUp();
             prnLine(4);
             printer.esc.text.printOut(ALIGN.CENTER, ESC.FONT_HEIGHT.x24, true, ESC.TEXT_ENLARGE.HEIGHT_WIDTH_DOUBLE, "粉尘浓度检测报告单");
             printer.esc.text.printOut(ALIGN.RIGHT, ESC.FONT_HEIGHT.x16, false, ESC.TEXT_ENLARGE.HEIGHT_WIDTH_DOUBLE, 
-                 date.ToLongDateString().ToString() + date.ToLongTimeString().ToString());
+                 Printdate.ToLongDateString().ToString() + Printdate.ToLongTimeString().ToString());
 
             printer.esc.feedDots(4);
             printer.esc.text.printOut("测试地点："+testloc+"\t"+"测试人员:"+testOperator);
@@ -516,7 +520,50 @@ namespace PC_Demo
 
         private void btn_preview_Click(object sender, EventArgs e)
         {
+            readFile();
 
+            richTextBox1.Text = "";
+            String StrBox="";
+            List<int> fontpos = new List<int>();
+            DateTime printDate=DateTime.Now;
+            StrBox+="   粉尘浓度检测报告单\n";
+            fontpos.Add(StrBox.Length);//0
+            StrBox+="          "+printDate.ToLongDateString().ToString() + printDate.ToLongTimeString().ToString()+"\n";
+            fontpos.Add(StrBox.Length);//1
+            StrBox+="测试地点:"+testloc+" 测试人员:"+testOperator+"\n";
+            StrBox+="\n";
+            fontpos.Add(StrBox.Length);//2
+            StrBox+="        监测时间"+"\n";
+            fontpos.Add(StrBox.Length);//3
+            StrBox+="开始时间" + starttime.ToLongDateString().ToString() + starttime.ToLongTimeString().ToString()+"\n";
+            StrBox+="结束时间"+stoptime.ToLongDateString().ToString() + stoptime.ToLongTimeString().ToString()+"\n";
+            StrBox+="测试时长" + testperoid.TotalMinutes.ToString("0.00") + " min"+"\n";
+            StrBox+="\n";
+            fontpos.Add(StrBox.Length);
+            StrBox+="        测量pA值"+"\n";
+            fontpos.Add(StrBox.Length);
+            StrBox+="最高值：" + data[0].ToString("0.0")+"\n";
+            StrBox+="最低值："+data[1].ToString("0.0")+"\n";
+            StrBox+="平均值：" + data[2].ToString("0.0")+"\n";
+            fontpos.Add(StrBox.Length);
+            StrBox+="        测量mA值"+"\n";
+            fontpos.Add(StrBox.Length);
+            StrBox+="最高值" + data[0].ToString("0.0")+"\n";
+            StrBox+="最低值" + data[1].ToString("0.0")+"\n";
+            StrBox+="平均值" + data[2].ToString("0.0")+"\n";
+            richTextBox1.Text = StrBox;
+            richTextBox1.Select(0, fontpos[0]);
+            richTextBox1.SelectionFont = new Font("SimSun", 14, FontStyle.Bold);
+            richTextBox1.Select(fontpos[0], fontpos[1]-fontpos[0]);
+            richTextBox1.SelectionFont = new Font("SimSun", 11, FontStyle.Regular);
+            richTextBox1.Select(fontpos[2], fontpos[3]-fontpos[2]);
+            richTextBox1.SelectionFont = new Font("SimSun", 11, FontStyle.Regular);
+            richTextBox1.Select(fontpos[4], fontpos[5]-fontpos[4]);
+            richTextBox1.SelectionFont = new Font("SimSun", 11, FontStyle.Regular);
+            richTextBox1.Select(fontpos[6], fontpos[7]-fontpos[6]);
+            richTextBox1.SelectionFont = new Font("SimSun", 11, FontStyle.Regular);
         }
+
+
     }
 }

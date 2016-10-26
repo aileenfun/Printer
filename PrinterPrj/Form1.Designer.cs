@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.comboBoxBaudrate = new System.Windows.Forms.ComboBox();
             this.buttonPortOpen = new System.Windows.Forms.Button();
             this.comboBoxPortName = new System.Windows.Forms.ComboBox();
@@ -37,13 +38,15 @@
             this.buttonEnforcement = new System.Windows.Forms.Button();
             this.btn_dust_prn = new System.Windows.Forms.Button();
             this.btn_preview = new System.Windows.Forms.Button();
+            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // comboBoxBaudrate
             // 
             this.comboBoxBaudrate.FormattingEnabled = true;
-            this.comboBoxBaudrate.Location = new System.Drawing.Point(226, 136);
+            this.comboBoxBaudrate.Location = new System.Drawing.Point(253, 454);
             this.comboBoxBaudrate.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxBaudrate.Name = "comboBoxBaudrate";
             this.comboBoxBaudrate.Size = new System.Drawing.Size(160, 23);
@@ -93,7 +96,7 @@
             // 
             // buttonImage
             // 
-            this.buttonImage.Location = new System.Drawing.Point(286, 136);
+            this.buttonImage.Location = new System.Drawing.Point(313, 454);
             this.buttonImage.Margin = new System.Windows.Forms.Padding(4);
             this.buttonImage.Name = "buttonImage";
             this.buttonImage.Size = new System.Drawing.Size(100, 29);
@@ -105,7 +108,7 @@
             // 
             // buttonEnforcement
             // 
-            this.buttonEnforcement.Location = new System.Drawing.Point(286, 173);
+            this.buttonEnforcement.Location = new System.Drawing.Point(313, 491);
             this.buttonEnforcement.Margin = new System.Windows.Forms.Padding(4);
             this.buttonEnforcement.Name = "buttonEnforcement";
             this.buttonEnforcement.Size = new System.Drawing.Size(100, 29);
@@ -132,15 +135,34 @@
             this.btn_preview.Name = "btn_preview";
             this.btn_preview.Size = new System.Drawing.Size(155, 36);
             this.btn_preview.TabIndex = 14;
-            this.btn_preview.Text = "文本预览";
+            this.btn_preview.Text = "内容预览";
             this.btn_preview.UseVisualStyleBackColor = true;
             this.btn_preview.Click += new System.EventHandler(this.btn_preview_Click);
+            // 
+            // printPreviewDialog1
+            // 
+            this.printPreviewDialog1.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.ClientSize = new System.Drawing.Size(400, 300);
+            this.printPreviewDialog1.Enabled = true;
+            this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
+            this.printPreviewDialog1.Name = "printPreviewDialog1";
+            this.printPreviewDialog1.Visible = false;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(13, 138);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(362, 269);
+            this.richTextBox1.TabIndex = 15;
+            this.richTextBox1.Text = "";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(386, 115);
+            this.ClientSize = new System.Drawing.Size(387, 416);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.btn_preview);
             this.Controls.Add(this.buttonImage);
             this.Controls.Add(this.comboBoxBaudrate);
@@ -168,6 +190,8 @@
         private System.Windows.Forms.Button buttonEnforcement;
         private System.Windows.Forms.Button btn_dust_prn;
         private System.Windows.Forms.Button btn_preview;
+        private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 
